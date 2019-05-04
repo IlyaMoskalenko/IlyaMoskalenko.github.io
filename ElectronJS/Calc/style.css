@@ -1,0 +1,55 @@
+body, div {
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+
+}
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+.btn {
+    flex: 20%;
+    height: 58px;
+    border: none;
+    font-size: 18px;
+    background: #3498DB;
+}   
+.bd-r-b {
+    border-right: 1px solid rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.bd-b {
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+.bg-eq {
+    background: #1ABC9C;
+}
+.input {
+    text-align: right;
+    width: 100%;
+    height: 51px;
+    font-size: 30px;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+    background: #34495E;
+    color: white;
+}
+.num-hover {
+    transition: 0.2s background;
+}
+.eq-hover {
+    transition: 0.2s background;
+}
+.eq-hover:hover {
+    background: rgb(33, 231, 192);
+}
+.num-hover:hover {
+    background: rgb(106, 181, 231);
+}
+.eq-hover:hover {
+    background: rgb(33, 231, 192);
+}

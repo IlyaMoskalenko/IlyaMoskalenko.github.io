@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Calculator</title>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div class="flex">
+            <input class="input" type="text" v-model="result" placeholder="0">
+            <button v-on:click="input(num)" v-bind:class=[num.class] v-for="num in numbers" key="num.id">{{num.caption}}</button>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>    
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                result: '',
+                operand1: '',
+                operand2: '',
+                numbers: [
+                    {id: 0,  caption: 'C',    class: 'btn bd-r-b num-hover',   type: 'action', action: 'clear'},
+                    {id: 1,  caption: 'X',    class: 'btn bd-r-b num-hover',   type: 'action', action: 'backspace'},
+                    {id: 2,  caption: '()',   class: 'btn bd-r-b num-hover',   type: 'action', action: 'parths'},
+                    {id: 3,  caption: '%',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'percent'},
+                    {id: 4,  caption: 'Pi',   class: 'btn bd-b num-hover',     type: 'number', action: 'none'},
+                    {id: 5,  caption: 'sin',  class: 'btn bd-r-b num-hover',   type: 'action', action: 'sin'},
+                    {id: 6,  caption: 'sqrt', class: 'btn bd-r-b num-hover',   type: 'action', action: 'sqrt'},
+                    {id: 7,  caption: 'sqr',  class: 'btn bd-r-b num-hover',   type: 'action', action: 'sqr'},
+                    {id: 8,  caption: 'x^y',  class: 'btn bd-r-b num-hover',   type: 'action', action: 'power'},
+                    {id: 9,  caption: '/',    class: 'btn bd-b num-hover',     type: 'action', action: 'division'},
+                    {id: 10, caption: 'cos',  class: 'btn bd-r-b num-hover',   type: 'action', action: 'cos'},
+                    {id: 11, caption: '1',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 12, caption: '2',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 13, caption: '3',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 14, caption: '*',    class: 'btn bd-b num-hover',     type: 'action', action: 'times'},
+                    {id: 15, caption: 'tan',  class: 'btn bd-r-b num-hover',   type: 'action', action: 'tan'},
+                    {id: 16, caption: '4',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 17, caption: '5',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 18, caption: '6',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 19, caption: '-',    class: 'btn bd-b num-hover',     type: 'action', action: 'minus'},
+                    {id: 20, caption: 'Ln',   class: 'btn bd-r-b num-hover',   type: 'action', action: 'Ln'},
+                    {id: 21, caption: '7',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 22, caption: '8',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 23, caption: '9',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 24, caption: '+',    class: 'btn bd-b num-hover',     type: 'action', action: 'plus'},
+                    {id: 25, caption: 'Lg',   class: 'btn bd-r-b num-hover',   type: 'action', action: 'Lg'},
+                    {id: 26, caption: 'e',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 27, caption: '0',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 28, caption: '.',    class: 'btn bd-r-b num-hover',   type: 'number', action: 'none'},
+                    {id: 29, caption: '=',    class: 'btn bd-b bg-eq eq-hover' type: 'action', action: 'calc'},                  
+                ]
+            },
+            methods: {
+                input(num) {
+                    if(num.type == 'number') {
+                        this.result += num.caption
+                    } else {
+                        switch(num.action) {
+                            case 'clear': this.reset()
+                            break;
+                            case 'backspace': this.result.slice(0,-1)
+                            break;
+                            case 'parths': 
+                            break;
+                            case 'percent': this.reset()
+                            break;
+                            case 'clear': this.reset()
+                            break;
+                            case 'clear': this.reset()
+                            break;
+                        }
+                    }
+                    
+                },
+                reset() {
+
+                },
+                calc() {
+
+                }
+            },
+        })
+    </script>
+</body>
+</html>
