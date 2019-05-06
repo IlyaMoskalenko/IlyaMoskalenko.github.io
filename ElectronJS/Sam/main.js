@@ -49,3 +49,7 @@ app.on('activate', function () {
     createWindow();
   }
 });
+
+process.env.GOOGLE_API_KEY = 'AIzaSyC2S6afgRgbdZI7HosQUO7FbKaifq2-k18'
+process.env.GOOGLE_DEFAULT_CLIENT_ID = '383318624674-3t5mi8pp4uhnb2qmtsmpopvtije1agcu.apps.googleusercontent.com'
+process.env.GOOGLE_DEFAULT_CLIENT_SECRET = 'VuFJqxVFxlUR_7gT0ARHFp7y'

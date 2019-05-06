@@ -1,5 +1,5 @@
 // Require annyang
-const annyang = require('annyang');
+const annyang = require('annyang')
 
 var CONFIG = {
     appName: 'Sam',
@@ -63,11 +63,13 @@ var commands = {
   'Время': currentTime,
   'Говори': quickSpeech,
   'Повтори': repeatLastSentence,
-};
+}
 
 if (annyang) {
   annyang.setLanguage(CONFIG.voiceRecognitionLanguage)
   annyang.addCommands(commands);
+
+  annyang.debug();
   annyang.start();
   console.log('Voice recognition ready');
 }
