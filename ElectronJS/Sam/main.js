@@ -1,6 +1,9 @@
-'use strict';
-
+'use strict'
 const electron = require('electron');
+const ipc = electron.ipcMain
+const exec = require('child_process').execFile;
+
+
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -18,7 +21,7 @@ function createWindow () {
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -49,6 +52,38 @@ app.on('activate', function () {
     createWindow();
   }
 });
+
+const execute = (fileName, params, path) => {
+  console.log('openning ' + fileName)
+  let promise = new Promise((resolve, reject) => {
+      exec(fileName, params, { cwd: path }, (err, data) => {
+          if (err) reject(err);
+          else resolve(data);
+      });
+
+  });
+  return promise;
+}
+
+ipc.on('open-application', (event,arg) => {
+  console.log(arg)
+  switch(arg) {
+    case 'notepad': execute('notepad++.exe',[],'D:\\Programs\\Notepad++')
+    break;
+
+    case 'chrome': execute('Chrome.exe',[],"C:\\Program Files (x86)\\Google\\Chrome\\Application")
+    break;
+    
+    case 'taskmanager': execute('Taskmgr.exe',[],'C:\\Windows\\System32')
+    break;
+
+    case 'vscode': execute('Code.exe',[],'D:\\Programs\\Visual Studio Code\\Microsoft VS Code')
+    break;
+
+    default: console.warn('не опознано')
+    break;
+  }
+})
 
 process.env.GOOGLE_API_KEY = 'AIzaSyC2S6afgRgbdZI7HosQUO7FbKaifq2-k18'
 process.env.GOOGLE_DEFAULT_CLIENT_ID = '383318624674-3t5mi8pp4uhnb2qmtsmpopvtije1agcu.apps.googleusercontent.com'
