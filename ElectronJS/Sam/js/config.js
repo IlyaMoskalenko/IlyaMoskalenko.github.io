@@ -1,9 +1,9 @@
 "use strict"
 
 const electron = require('electron')
-const ipc = electron.ipcRenderer
+const ipc =      electron.ipcRenderer
 
-const PARAMS = {
+let PARAMS = {
     appName:                  'Sam',
     userName:                 'Ilya',
     voiceRecognitionLanguage: 'ru',
@@ -12,16 +12,16 @@ const PARAMS = {
     activationSound:          new Howl({src: ['assets/audio/definite.mp3']})
 }
 
-const RESPONDS = {
+let RESPONDS = {
     resHello:                 "Привет",
     resGreeting:              ["Да?", "Слушаю", "Чем могу помочь?"],
     resGoodbye:               ["До скорого",　"Пока"],
     resQuickSpeech:           ['Bla','BlaBla','BlaBlaBla'],
-    resTranslate:             "Перевожу...",
-    resOpen:                  "Открываю...",
+    resTranslate:             "Перевожу",
+    resOpen:                  ["Открываю", "Хорошо", "Сейчас"]
 } 
 
-const FUNCTIONS = {
+let FUNCTIONS = {
     renderMessage(msg, callback, params) {
         // params = params || null
       
@@ -84,36 +84,45 @@ const FUNCTIONS = {
     },
     chrome() {
         PARAMS.confirmationSound.play()
-        FUNCTIONS.renderMessage(RESPONDS.resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 400})
-        ipc.send('open-application', 'chrome')
+        let resOpen = FUNCTIONS.randomSentence(RESPONDS.resOpen)
+        FUNCTIONS.renderMessage(resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 200})
+        ipc.send('open-application', {action: 'chrome', option: ''})
     },
     notepad() {
         PARAMS.confirmationSound.play()
-        FUNCTIONS.renderMessage(RESPONDS.resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 400})
-        ipc.send('open-application', 'notepad')
+        let resOpen = FUNCTIONS.randomSentence(RESPONDS.resOpen)
+        FUNCTIONS.renderMessage(resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 200})
+        ipc.send('open-application', {action: 'notepad', option: ''})
     },
     taskmanager() {
         PARAMS.confirmationSound.play()
-        FUNCTIONS.renderMessage(RESPONDS.resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 400})
-        ipc.send('open-application', 'taskmanager')
+        let resOpen = FUNCTIONS.randomSentence(RESPONDS.resOpen)
+        FUNCTIONS.renderMessage(resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 200})
+        ipc.send('open-application', {action: 'taskmanager', option: ''})
     },
     vscode() {
         PARAMS.confirmationSound.play()
-        FUNCTIONS.renderMessage(RESPONDS.resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 400})
-        ipc.send('open-application', 'vscode')
+        FUNCTIONS.renderMessage(resOpen, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 200})
+        ipc.send('open-application', {action: 'vscode', option: ''})
+    },
+    translate(tag) {
+        console.log(tag)
+        PARAMS.confirmationSound.play()
+        FUNCTIONS.renderMessage(RESPONDS.resTranslate, say, {messageClass: 'message-left', alertClass: 'alert-primary', delay: 400})
+        ipc.send('open-application', {action: 'translate', option: tag})
     },
 }
 
-const VOICE_COMMANDS = {
+let VOICE_COMMANDS = {
     'Привет':                 FUNCTIONS.hello,
     'Сэм':                    FUNCTIONS.greeting,
     'Пока':                   FUNCTIONS.goodbye,
     'Время':                  FUNCTIONS.currentTime,
     'Говори':                 FUNCTIONS.quickSpeech,
     'Повтори':                FUNCTIONS.repeatLastSentence,
-    'Перевод *tag':           FUNCTIONS.translate,
-    'хром':                   FUNCTIONS.chrome,
-    'нотпад':                 FUNCTIONS.notepad,
-    'диспетчер задач':        FUNCTIONS.taskmanager,
-    'код':                    FUNCTIONS.vscode,
+    'Переведи *tag':          FUNCTIONS.translate,
+    'Хром':                   FUNCTIONS.chrome,
+    'Нотпад':                 FUNCTIONS.notepad,
+    'Диспетчер задач':        FUNCTIONS.taskmanager,
+    'Код':                    FUNCTIONS.vscode,
 }

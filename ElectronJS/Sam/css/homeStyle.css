@@ -1,0 +1,18 @@
+.h100 {
+    height: 100vh;
+}
+.flex {
+    display: flex;
+}
+.j-c-c {
+    justify-content: center;
+}
+.j-c-s-b {
+    justify-content: flex-end;
+}
+.a-i-c {
+    align-items: flex-end;
+}   
+.a-i-s-b {
+    align-items: space-between;
+}   

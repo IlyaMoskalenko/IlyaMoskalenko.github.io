@@ -1,83 +1,58 @@
-'use strict'
-const electron = require('electron');
-const ipc = electron.ipcMain
-const exec = require('child_process').execFile;
+"use strict"
 
+// TODO: user commands interface using fs, fs.stat
 
-// Module to control application life.
-const app = electron.app;
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow;
+const electron =      require('electron')
+const shell =         require('electron').shell
+const fs =            require('fs')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const app =           electron.app
+const ipc =           electron.ipcMain
+const BrowserWindow = electron.BrowserWindow
+
 let mainWindow;
 
 function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({width: 800, height: 600})
 
-  // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html')
+  
+  mainWindow.webContents.openDevTools()
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
-
-  // Emitted when the window is closed.
   mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
+    mainWindow = null
   });
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
 });
 
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
-    createWindow();
+    createWindow()
   }
 });
 
-const execute = (fileName, params, path) => {
-  console.log('openning ' + fileName)
-  let promise = new Promise((resolve, reject) => {
-      exec(fileName, params, { cwd: path }, (err, data) => {
-          if (err) reject(err);
-          else resolve(data);
-      });
-
-  });
-  return promise;
-}
-
 ipc.on('open-application', (event,arg) => {
-  console.log(arg)
-  switch(arg) {
-    case 'notepad': execute('notepad++.exe',[],'D:\\Programs\\Notepad++')
+  switch(arg.action) {
+    case 'notepad': shell.openItem('D:\\Programs\\Notepad++\\notepad++.exe')
     break;
 
-    case 'chrome': execute('Chrome.exe',[],"C:\\Program Files (x86)\\Google\\Chrome\\Application")
+    case 'chrome': shell.openItem("C:\\Program Files (x86)\\Google\\Chrome\\Application\\Chrome.exe")
     break;
     
-    case 'taskmanager': execute('Taskmgr.exe',[],'C:\\Windows\\System32')
+    case 'taskmanager': shell.openItem('C:\\Windows\\System32\\Taskmgr.exe')
     break;
 
-    case 'vscode': execute('Code.exe',[],'D:\\Programs\\Visual Studio Code\\Microsoft VS Code')
+    case 'vscode': shell.openItem('D:\\Programs\\Visual Studio Code\\Microsoft VS Code\\Code.exe')
+    break;
+
+    case 'translate': shell.openExternal(`https://translate.google.by/?hl=ru&tab=wT#view=home&op=translate&sl=auto&tl=ru&text=${arg.option}`)
     break;
 
     default: console.warn('не опознано')

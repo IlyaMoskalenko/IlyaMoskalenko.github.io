@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 // Require annyang
 const annyang = require('annyang')
